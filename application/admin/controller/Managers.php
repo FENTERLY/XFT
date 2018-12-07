@@ -17,8 +17,10 @@ class Managers extends Controller
     //管理列表
     public function manager()
     {
-        $manager = Manager::select();
+        $manager = Manager::where('ma_level',0)->select();
+        $managers = Manager::select();
         $username = Session::get('username');
+        $this->assign('managers',$managers);
         $this->assign('username',$username);
         $this->assign('manager',$manager);
         return $this->fetch();
