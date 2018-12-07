@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>权限管理添加</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+    <link rel="stylesheet" href="__STATIC__/admin/css/font.css">
+	<link rel="stylesheet" href="__STATIC__/admin/css/xadmin.css">
+    <link rel="stylesheet" href="https://cdn.bootcss.com/Swiper/3.4.2/css/swiper.min.css">
+    <script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdn.bootcss.com/Swiper/3.4.2/js/swiper.jquery.min.js"></script>
+    <script src="__STATIC__/admin/lib/layui/layui.js" charset="utf-8"></script>
+    <script type="text/javascript" src="__STATIC__/admin/js/xadmin.js"></script>
+
+</head>
+    <script>
+        $(function(){
+            $('#adds').submit(function(){
+                $.post('/index.php/Admin/Managers/add',$('#adds').serialize(),function(msg){
+                    if(msg==1)
+                    {
+                        alert("管理名称已存在");
+                    }
+                    else if(msg==2)
+                    {
+                        alert("管理权限添加成功");
+                        $(location).attr('href','/index.php/admin/Managers/manager');
+                    }
+                    else if(msg==3)
+                    {
+                        alert("添加失败");
+                        $(location).attr('href','/index.php/admin/Managers/manager');
+                    }
+                });
+                return false;
+            });
+        });
+    </script>
+<body>
+    <!-- 中部开始 -->
+    <div class="wrapper">
+        <!-- 右侧主体开始 -->
+        <div class="page-content">
+          <div class="content">
+            <!-- 右侧内容框架，更改从这里开始 -->
+            <form class="layui-form" method="post" id="adds">
+                <div class="layui-form-item">
+                    <label for="ma_name" class="layui-form-label">
+                        <span class="x-red">*</span>管理名称
+                    </label>
+                    <div class="layui-input-inline">
+                        <input type="text" id="ma_name" name="ma_name" required="" lay-verify="ma_name"
+                        autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label for="ma_address" class="layui-form-label">
+                        <span class="x-red">*</span>管理地址
+                    </label>
+                    <div class="layui-input-inline">
+                        <input type="text" id="ma_address" name="ma_address" required="" lay-verify="ma_address"
+                        autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label for="ma_father" class="layui-form-label">
+                        <span class="x-red">*</span>管理父类
+                    </label>
+                    <div class="layui-input-inline">
+                        <select id="ma_father" name="ma_father">
+                            <option></option>
+                            <?php foreach($manager as $ma):?>
+                                <option><?php echo $ma['ma_name'];?></option>
+                            <?php endforeach;?>
+                        </select>
+                    </div>
+                    <div class="layui-form-mid layui-word-aux">
+                        没有选择默认为无父类
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label for="ma_father" class="layui-form-label">
+                    </label>
+                    <button  class="layui-btn" lay-filter="add" lay-submit="" type="submit">
+                        增加
+                    </button>
+                </div>
+            </form>
+            <!-- 右侧内容框架，更改从这里结束 -->
+          </div>
+        </div>
+        <!-- 右侧主体结束 -->
+    </div>
+    <!-- 中部结束 -->
+</body>
+</html>
