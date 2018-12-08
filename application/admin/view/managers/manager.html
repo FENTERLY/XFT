@@ -47,10 +47,26 @@
                     </li>
                     <?php foreach($manager as $ma):?>
                     <li class="list">
-                        <a href="<?php echo $ma['ma_address'];?>">
-                            <i class="iconfont">&#xe70b;</i>
-                            <?php echo $ma['ma_name'];?>
-                        </a>
+                        <?php if($ma['ma_son']==0):?><a href="<?php echo $ma['ma_address'];?>">
+                        <?php else:?><a href="#">
+                        <?php endif;?>
+                        <i class="iconfont">&#xe70b;</i>
+                        <?php echo $ma['ma_name'];?>
+                    </a>
+                        <?php if($ma['ma_son']!=0):?>
+                        <ul class="sub-menu" style="display:none">
+                            <?php foreach($manager2 as $ma2):?>
+                            <?php if($ma2['ma_father']==$ma['ma_id']):?>
+                            <li>
+                                <a href="<?php echo $ma2['ma_address'];?>">
+                                    <i class="iconfont">&#xe6a7;</i>
+                                    <?php echo $ma2['ma_name'];?>
+                                </a>
+                            </li>
+                            <?php endif;?>
+                            <?php endforeach;?>
+                        </ul>
+                        <?php endif;?>
                     </li>
                     <?php endforeach?>
                 </ul>
@@ -94,7 +110,7 @@
                 </thead>
                 <tbody>
                 <?php foreach($managers as $ma):?>
-                    <tr>
+                    <tr id="tr_{$ma.ma_id}">
                         <td>
                             <input type="checkbox" value="1" name="">
                         </td>
@@ -121,11 +137,11 @@
                             </td>
                         <?php endif;?>
                         <td class="td-manage">
-                            <a title="编辑" href="javascript:;" onclick="manager_edit('编辑','edit.html?ma=<?php echo $ma['ma_id'];?>','4','','510')"
+                            <a title="编辑" href="javascript:;" onclick="manager_edit('编辑','edit.html?ma={$ma.ma_id}','4','','510')"
                             class="ml-5" style="text-decoration:none">
                                 <i class="layui-icon">&#xe642;</i>
                             </a>
-                            <a title="删除" href="javascript:;" onclick="member_del(this,'1')" 
+                            <a title="删除" href="javascript:void(0);" onclick="manager_del('{$ma.ma_id}')"
                             style="text-decoration:none">
                                 <i class="layui-icon">&#xe640;</i>
                             </a>
@@ -177,12 +193,19 @@
             x_admin_show(title,url,w,h);
         }
         /*管理-删除*/
-        function member_del(obj,id){
-            layer.confirm('确认要删除吗？',function(index){
-                //发异步删除数据
-                $(obj).parents("tr").remove();
-                layer.msg('已删除!',{icon:1,time:1000});
-            });
+        function manager_del(mid){
+            if(confirm("确定要删除吗"))
+            {
+                var url = "../Managers/del";  //控制器中的方法
+                var data = {'id':mid};   //传来的参数
+                var success = function(response){       //如果php处理成功，调用此方法
+                    if(response.error==0)
+                    {
+                        document.getElementById('tr_'+mid).remove();      //把这个id的数据在html中自动删除
+                    }
+                }
+                $.get(url,data,success,"json");
+            }
         }
         </script>
 </body>

@@ -16,8 +16,10 @@ class Index extends Controller
     public function index()
     {
         $manager = Manager::where('ma_level',0)->select();
+        $manager2 = Manager::where('ma_level',1)->select();
         $username = Session::get('username');
         $this->assign('username',$username);
+        $this->assign('manager2',$manager2);
         $this->assign('manager',$manager);
         return $this->fetch();
 

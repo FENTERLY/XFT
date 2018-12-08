@@ -48,10 +48,26 @@
                 </li>
                 <?php foreach($manager as $ma):?>
                 <li class="list">
-                    <a href="<?php echo $ma['ma_address'];?>">
+                    <?php if($ma['ma_son']==0):?><a href="<?php echo $ma['ma_address'];?>">
+                    <?php else:?><a href="#">
+                    <?php endif;?>
                         <i class="iconfont">&#xe70b;</i>
                         <?php echo $ma['ma_name'];?>
                     </a>
+                    <?php if($ma['ma_son']!=0):?>
+                    <ul class="sub-menu" style="display:none">
+                        <?php foreach($manager2 as $ma2):?>
+                        <?php if($ma2['ma_father']==$ma['ma_id']):?>
+                            <li>
+                                <a href="<?php echo $ma2['ma_address'];?>">
+                                    <i class="iconfont">&#xe6a7;</i>
+                                    <?php echo $ma2['ma_name'];?>
+                                </a>
+                            </li>
+                        <?php endif;?>
+                        <?php endforeach;?>
+                    </ul>
+                    <?php endif;?>
                 </li>
                 <?php endforeach?>
             </ul>
