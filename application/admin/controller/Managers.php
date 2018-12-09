@@ -17,21 +17,37 @@ class Managers extends Controller
     //管理列表
     public function manager()
     {
-        $manager = Manager::where('ma_level',0)->select();
-        $manager2 = Manager::where('ma_level',1)->select();
-        $managers = Manager::select();
-        $username = Session::get('username');
-        $this->assign('managers',$managers);
-        $this->assign('username',$username);
-        $this->assign('manager2',$manager2);
-        $this->assign('manager',$manager);
-        return $this->fetch();
+        if(Session::get('username')==NULL)
+        {
+
+            return $this->error('请先登录','login/login');
+
+        }
+        else {
+
+            $manager = Manager::where('ma_level',0)->select();
+            $manager2 = Manager::where('ma_level',1)->select();
+            $managers = Manager::select();
+            $username = Session::get('username');
+            $this->assign('managers',$managers);
+            $this->assign('username',$username);
+            $this->assign('manager2',$manager2);
+            $this->assign('manager',$manager);
+            return $this->fetch();
+
+        }
 
     }
 
     //管理模块的添加
     public function add()
     {
+        if(Session::get('username')==NULL)
+        {
+
+            return $this->error('请先登录','login/login');
+
+        }
         if(!empty($_POST))
         {
             $ma_name = Request::param('ma_name');
@@ -83,23 +99,55 @@ class Managers extends Controller
     //管理模块的编辑
     public function edit()
     {
+        if(Session::get('username')==NULL)
+        {
+
+            return $this->error('请先登录','login/login');
+
+        }
         if(!empty($_POST))
         {
             $name = Request::param('ma_name');
             $address = Request::param('ma_address');
             $father = Request::param('ma_father');
+            //查询父类的id
+            $father_id = Manager::where('ma_name',$father)->value('ma_id');
             //查看输入的管理名称是否是最高等级
             $level = Manager::where('ma_name',$name)->value('ma_level');
             if($level==0&&$father!='无父类'){
                 echo '1';
                 exit;
             }
+            else{
+                //查询要更改的数据
+                $update_data = Manager::where('ma_name',$name)->find();
+                $res = Manager::where('ma_name',$name)->update([
+                    'ma_name'=>$name,
+                    'ma_address'=>$address,
+                    'ma_father'=>$father_id,
+                ]);//更新数据库里面的数据
+
+                //如果更新的父类有所改变，就要更改原有父类的ma_son字段减1，新的父类就要自增1
+                if($father_id!=$update_data['ma_father'])
+                {
+                    Manager::where('ma_id',$update_data['ma_father'])->setDec('ma_son');
+                    Manager::where('ma_id',$father_id)->setInc('ma_son');
+                }
+
+                if($res)
+                {
+                    echo '2';
+                    exit;
+                }
+            }
         }
         else{
             $ma_id = Request::param('ma');
             $ma = Manager::where('ma_id',$ma_id)->find();
+            $ma2 = Manager::where('ma_id',$ma['ma_father'])->find();
             $manager = Manager::where('ma_level',0)->select();
             $this->assign('ma',$ma);
+            $this->assign('ma2',$ma2);
             $this->assign('manager',$manager);
             return $this->fetch('manager-edit');
         }
@@ -108,6 +156,12 @@ class Managers extends Controller
     //管理模块的删除
     public function del()
     {
+        if(Session::get('username')==NULL)
+        {
+
+            return $this->error('请先登录','login/login');
+
+        }
         $id = input('get.id');  //接收前端Ajax传过来的数据
         $d_data = Manager::where('ma_id',$id)->find(); //查询准备要删除的数据
         $result = Manager::where('ma_id',$id)->delete();  //删除此id对应的数据

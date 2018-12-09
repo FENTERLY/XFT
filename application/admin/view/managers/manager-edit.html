@@ -22,6 +22,11 @@
                 {
                     alert('已是最高级别的管理');
                 }
+                else if(msg==2)
+                {
+                    alert('数据编辑成功');
+                    $(location).attr('href','/index.php/admin/Managers/manager');
+                }
                 return false;
             });
         });
@@ -59,7 +64,9 @@
                     </label>
                     <div class="layui-input-inline">
                         <select id="ma_father" name="ma_father">
-                            <option><?php if($ma['ma_father']==0):?>无父类<?php endif;?></option>
+                            <option><?php if($ma['ma_father']==0):?>无父类
+                                <?php else:?><?php echo $ma2['ma_name'];?>
+                                <?php endif;?></option>
                             <?php foreach($manager as $ma):?>
                                 <option><?php echo $ma['ma_name'];?></option>
                             <?php endforeach;?>
