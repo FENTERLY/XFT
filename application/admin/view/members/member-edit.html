@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>会员编辑</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+    <link rel="stylesheet" href="__STATIC__/admin/css/font.css">
+    <link rel="stylesheet" href="__STATIC__/admin/css/xadmin.css">
+    <link rel="stylesheet" href="https://cdn.bootcss.com/Swiper/3.4.2/css/swiper.min.css">
+    <script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdn.bootcss.com/Swiper/3.4.2/js/swiper.jquery.min.js"></script>
+    <script src="__STATIC__/admin/lib/layui/layui.js" charset="utf-8"></script>
+    <script type="text/javascript" src="__STATIC__/admin/js/xadmin.js"></script>
+
+</head>
+<script>
+    $(function(){
+       $('#edits').submit(function(){
+           $.post('/index.php/Admin/Members/edit',$('#edits').serialize(),function(msg){
+               if(msg==1)
+               {
+                   alert('用户编辑成功');
+                   $(location).attr('href','/index.php/admin/Members/member');
+               }
+               else{
+                   alert('数据编辑失败');
+               }
+           });
+           return false;
+       });
+    });
+</script>
+<script>
+    $(function(){
+        $('#user_email').focus(function(){
+            $('#prompt').remove();
+        });
+       $('#user_email').blur(function(){
+           var emailVal = $.trim(this.value);
+           var myreg = /^([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/;
+           if(!myreg.test(emailVal))
+           {
+               $(this).parent().after("<span id='prompt' style='color: red'>*邮箱格式出错</span>");
+               $('#button1').attr('style','display:none');
+               $('#button2').attr('style','display:block');
+               $('#button2').attr('style','background-color:red');
+           }
+           else
+           {
+               $(this).parent().after("<span id='prompt' style='color: green'>*邮箱格式正确</span>");
+               $('#button1').attr('style','display:block');
+               $('#button2').attr('style','display:none');
+           }
+           return false;
+       });
+    });
+</script>
+<body>
+    <!-- 中部开始 -->
+    <div class="wrapper">
+        <!-- 右侧主体开始 -->
+        <div class="page-content">
+          <div class="content">
+            <!-- 右侧内容框架，更改从这里开始 -->
+            <form class="layui-form" id="edits">
+                <div class="layui-form-item">
+                    <label for="user_id" class="layui-form-label">
+                        ID
+                    </label>
+                    <div class="layui-input-inline">
+                        <input type="text" id="user_id" name="user_id" readonly="readonly" required lay-verify="required"
+                               autocomplete="off" value="<?php echo $members['user_id'];?>" class="layui-input">
+                    </div>
+                    <label class="layui-form-label" style="color: red">
+                        *ID不可编辑
+                    </label>
+                </div>
+                <div class="layui-form-item">
+                    <label for="user_name" class="layui-form-label">
+                        用户名
+                    </label>
+                    <div class="layui-input-inline">
+                        <input type="text" id="user_name" name="user_name" required lay-verify="required"
+                        autocomplete="off" value="<?php echo $members['user_name'];?>" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label for="user_email" class="layui-form-label">
+                        邮箱
+                    </label>
+                    <div class="layui-input-inline">
+                        <input type="text" id="user_email" name="user_email"  required lay-verify="email"
+                               autocomplete="off" value="<?php echo $members['user_email'];?>" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label for="user_vip" class="layui-form-label">
+                        超级会员
+                    </label>
+                    <div class="layui-input-inline">
+                        <select name="user_vip">
+                            <option><?php if($members['user_vip']==0):?>否<?php else:?>是<?php endif;?></option>
+                            <option><?php if($members['user_vip']!=0):?>否<?php else:?>是<?php endif;?></option>
+                        </select>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label for="L_sign" class="layui-form-label">
+                    </label>
+                    <button id="button1" class="layui-btn" key="set-mine" lay-filter="save" style="display: block">
+                        保存
+                    </button>
+                    <button id="button2" style="display: none;" disabled="true">请确认输入内容正确</button>
+                </div>
+            </form>
+            <!-- 右侧内容框架，更改从这里结束 -->
+          </div>
+        </div>
+        <!-- 右侧主体结束 -->
+    </div>
+    <!-- 中部结束 -->
+</body>
+</html>

@@ -1,16 +1,53 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-<title>Hello Music 注册</title>
-<link rel="stylesheet" href="__STATIC__/index/css/style.css" />
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+	<title>Hello Music 注册</title>
+	<link rel="stylesheet" href="__STATIC__/index/css/style.css" />
+	<script src="__STATIC__/index/js/jquery-3.2.1.js"></script>
+	<script src="__STATIC__/index/js/jquery.min.js"></script>
+    <script src="__STATIC__/index/js/common.js"></script>
+	<!--背景图片自动更换-->
+	<script src="__STATIC__/index/js/supersized.3.2.7.min.js"></script>
+	<script src="__STATIC__/index/js/supersized-init.js"></script>
+	<!--表单验证-->
+	<script src="__STATIC__/index/js/jquery.validate.min.js?var1.14.0"></script>
+</head>
+<script>
+	$(function(){
+	    $('#register').submit(function(){
+            $.post('/index.php/Index/Sign/register',$('#register').serialize(),function(msg){
+                if(msg==1)
+                {
+                    alert("用户名已存在");
+                    return false;
+                }
+                else if(msg==2)
+                {
+                    alert("两次密码输入不一致");
+                }
+                else if(msg==3)
+                {
+                    alert("注册成功");
+                    $(location).attr('href','/index.php/index/Sign/register');
+                }
+                else
+				{
+				    alert("注册失败");
+                    $(location).attr('href','/index.php/index/Sign/register');
+				}
+            });
+            return false;
+		});
+	});
+</script>
 <body>
 
 <div class="register-container">
 	<h1>Hello Music</h1>
 	
-	<form action="" method="post" id="registerForm">
+	<form method="post" id="register">
 		<div>
 			<input type="text" name="username" class="username" placeholder="您的用户名" autocomplete="off"/>
 		</div>
@@ -25,21 +62,12 @@
 		</div>
 
 		<button id="submit" type="submit">注 册</button>
+		<a href="login">
+			<button type="button" class="register-tis">已经有账号？</button>
+		</a>
 	</form>
-	<a href="login">
-		<button type="button" class="register-tis">已经有账号？</button>
-	</a>
 
 </div>
-
-
-<script src="__STATIC__/index/js/jquery.min.js"></script>
-<script src="__STATIC__/index/js/common.js"></script>
-<!--背景图片自动更换-->
-<script src="__STATIC__/index/js/supersized.3.2.7.min.js"></script>
-<script src="__STATIC__/index/js/supersized-init.js"></script>
-<!--表单验证-->
-<script src="__STATIC__/index/js/jquery.validate.min.js?var1.14.0"></script>
 
 </body>
 </html>

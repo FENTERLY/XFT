@@ -1,0 +1,207 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>会员管理</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+    <link rel="stylesheet" href="__STATIC__/admin/css/font.css">
+    <link rel="stylesheet" href="__STATIC__/admin/css/xadmin.css">
+    <link rel="stylesheet" href="https://cdn.bootcss.com/Swiper/3.4.2/css/swiper.min.css">
+    <script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdn.bootcss.com/Swiper/3.4.2/js/swiper.jquery.min.js"></script>
+    <script src="__STATIC__/admin/lib/layui/layui.js" charset="utf-8"></script>
+    <script type="text/javascript" src="__STATIC__/admin/js/xadmin.js"></script>
+
+</head>
+<body>
+<!-- 顶部开始 -->
+<div class="container">
+    <div class="logo"><a href="#">Hello Music</a></div>
+    <div class="open-nav"><i class="iconfont">&#xe699;</i></div>
+    <ul class="layui-nav right" lay-filter="">
+        <li class="layui-nav-item">
+            <a href="javascript:;">admin</a>
+            <dl class="layui-nav-child"> <!-- 二级菜单 -->
+                <dd><a href="">个人信息</a></dd>
+                <dd><a href="">切换帐号</a></dd>
+                <dd><a href="./login.html">退出</a></dd>
+            </dl>
+        </li>
+        <li class="layui-nav-item"><a href="/">前台首页</a></li>
+    </ul>
+</div>
+<!-- 顶部结束 -->
+<!-- 中部开始 -->
+<div class="wrapper">
+    <!-- 左侧菜单开始 -->
+    <div class="wrapper">
+        <!-- 左侧菜单开始 -->
+        <div class="left-nav">
+            <div id="side-nav">
+                <ul id="nav">
+                    <li class="list" current>
+                        <a href="../index/index">
+                            <i class="iconfont">&#xe761;</i>
+                            信息页面
+                        </a>
+                    </li>
+                    <?php foreach($manager as $ma):?>
+                    <li class="list">
+                        <?php if($ma['ma_son']==0):?><a href="<?php echo $ma['ma_address'];?>">
+                        <?php else:?><a href="#">
+                        <?php endif;?>
+                        <i class="iconfont">&#xe70b;</i>
+                        <?php echo $ma['ma_name'];?>
+                    </a>
+                        <?php if($ma['ma_son']!=0):?>
+                        <ul class="sub-menu" style="display:none">
+                            <?php foreach($manager2 as $ma2):?>
+                            <?php if($ma2['ma_father']==$ma['ma_id']):?>
+                            <li>
+                                <a href="<?php echo $ma2['ma_address'];?>">
+                                    <i class="iconfont">&#xe6a7;</i>
+                                    <?php echo $ma2['ma_name'];?>
+                                </a>
+                            </li>
+                            <?php endif;?>
+                            <?php endforeach;?>
+                        </ul>
+                        <?php endif;?>
+                        <?php endforeach?>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    <!-- 左侧菜单结束 -->
+    <!-- 右侧主体开始 -->
+    <div class="page-content">
+        <div class="content">
+            <!-- 右侧内容框架，更改从这里开始 -->
+            <xblock><button class="layui-btn layui-btn-danger" onclick="delAll()"><i class="layui-icon">&#xe640;</i>批量删除</button><button class="layui-btn" onclick="member_add('添加用户','member-add.html','600','500')"><i class="layui-icon">&#xe608;</i>添加</button>
+            <table class="layui-table">
+                <thead>
+                <tr>
+                    <th>
+                        <input type="checkbox" name="" value="">
+                    </th>
+                    <th>
+                        ID
+                    </th>
+                    <th>
+                        用户名
+                    </th>
+                    <th>
+                        邮箱
+                    </th>
+                    <th>
+                        超级会员
+                    </th>
+                    <th>
+                        注册时间
+                    </th>
+                    <th>
+                        操作
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+                <?php foreach($member as $me):?>
+                <tr id="tr_{$me.user_id}">
+                    <td>
+                        <input type="checkbox" value="1" name="">
+                    </td>
+                    <td>
+                        <?php echo $me['user_id'];?>
+                    </td>
+                    <td>
+                        <?php echo $me['user_name'];?>
+                    </td>
+                    <td>
+                        <?php echo $me['user_email'];?>
+                    </td>
+                    <td>
+                        <?php if($me['user_vip']==0):?>否
+                        <?php else:?>是
+                        <?php endif;?>
+                    </td>
+                    <td>
+                        <?php echo $me['user_create'];?>
+                    </td>
+                    <td class="td-manage">
+                        <a title="编辑" href="javascript:;" onclick="member_edit('编辑','edit.html?me={$me.user_id}','4','','510')"
+                           class="ml-5" style="text-decoration:none">
+                            <i class="layui-icon">&#xe642;</i>
+                        </a>
+                        <a title="删除" href="javascript:;" onclick="member_del('{$me.user_id}')"
+                           style="text-decoration:none">
+                            <i class="layui-icon">&#xe640;</i>
+                        </a>
+                    </td>
+                </tr>
+                <?php endforeach;?>
+                </tbody>
+            </table>
+            <!-- 右侧内容框架，更改从这里结束 -->
+        </div>
+    </div>
+    <!-- 右侧主体结束 -->
+</div>
+<!-- 中部结束 -->
+<!-- 底部开始 -->
+<div class="footer">
+    <div class="copyright">Copyright ©XFT HelloMusic. </div>
+</div>
+<!-- 底部结束 -->
+<!-- 背景切换开始 -->
+<div class="bg-changer">
+    <div class="swiper-container changer-list">
+        <div class="swiper-wrapper">
+            <div class="swiper-slide"><img class="item" src="__STATIC__/admin/images/a.jpg" alt=""></div>
+            <div class="swiper-slide"><img class="item" src="__STATIC__/admin/images/b.jpg" alt=""></div>
+            <div class="swiper-slide"><img class="item" src="__STATIC__/admin/images/c.jpg" alt=""></div>
+            <div class="swiper-slide"><img class="item" src="__STATIC__/admin/images/d.jpg" alt=""></div>
+            <div class="swiper-slide"><img class="item" src="__STATIC__/admin/images/e.jpg" alt=""></div>
+            <div class="swiper-slide"><img class="item" src="__STATIC__/admin/images/f.jpg" alt=""></div>
+            <div class="swiper-slide"><img class="item" src="__STATIC__/admin/images/g.jpg" alt=""></div>
+            <div class="swiper-slide"><img class="item" src="__STATIC__/admin/images/h.jpg" alt=""></div>
+            <div class="swiper-slide"><img class="item" src="__STATIC__/admin/images/i.jpg" alt=""></div>
+            <div class="swiper-slide"><img class="item" src="__STATIC__/admin/images/j.jpg" alt=""></div>
+            <div class="swiper-slide"><img class="item" src="__STATIC__/admin/images/k.jpg" alt=""></div>
+        </div>
+    </div>
+    <div class="bg-out"></div>
+    <div id="changer-set"><i class="iconfont">&#xe696;</i></div>
+</div>
+<!-- 背景切换结束 -->
+<!-- 页面动态效果 -->
+<script>
+
+    /*用户-添加*/
+    function member_add(title,url,w,h){
+        x_admin_show(title,url,w,h);
+    }
+
+    // 用户-编辑
+    function member_edit (title,url,id,w,h) {
+        x_admin_show(title,url,w,h);
+    }
+
+    /*用户-删除*/
+    function member_del(uid){
+        if(confirm("确定要删除吗"))
+        {
+            var url = "../Members/del";  //控制器中的方法
+            var data = {'id':uid};   //传来的参数
+            var success = function(response){       //如果php处理成功，调用此方法
+                if(response.error==0)
+                {
+                    document.getElementById('tr_'+uid).remove();      //把这个id的数据在html中自动删除
+                }
+            }
+            $.get(url,data,success,"json");
+        }
+    }
+</script>
+</body>
+</html>

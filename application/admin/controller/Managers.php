@@ -107,35 +107,35 @@ class Managers extends Controller
         }
         if(!empty($_POST))
         {
-            $name = Request::param('ma_name');
             $address = Request::param('ma_address');
             $father = Request::param('ma_father');
+            $names = Request::param('ma_name');
+            $ids = Request::param('ma_id');
             //查询父类的id
             $father_id = Manager::where('ma_name',$father)->value('ma_id');
             //查看输入的管理名称是否是最高等级
-            $level = Manager::where('ma_name',$name)->value('ma_level');
-            if($level==0&&$father!='无父类'){
+            $level = Manager::where('ma_id',$ids)->value('ma_level');
+            if($father!='无父类' && $level==0){
                 echo '1';
                 exit;
             }
             else{
                 //查询要更改的数据
-                $update_data = Manager::where('ma_name',$name)->find();
-                $res = Manager::where('ma_name',$name)->update([
-                    'ma_name'=>$name,
+                $update_data = Manager::where('ma_id',$ids)->find();
+                $res = Manager::where('ma_id',$ids)->update([
+                    'ma_name'=>$names,
                     'ma_address'=>$address,
                     'ma_father'=>$father_id,
                 ]);//更新数据库里面的数据
 
-                //如果更新的父类有所改变，就要更改原有父类的ma_son字段减1，新的父类就要自增1
-                if($father_id!=$update_data['ma_father'])
-                {
-                    Manager::where('ma_id',$update_data['ma_father'])->setDec('ma_son');
-                    Manager::where('ma_id',$father_id)->setInc('ma_son');
-                }
-
                 if($res)
                 {
+//                    如果更新的父类有所改变，就要更改原有父类的ma_son字段减1，新的父类就要自增1
+                    if($father_id!=$update_data['ma_father'])
+                    {
+                        Manager::where('ma_id',$update_data['ma_father'])->setDec('ma_son');
+                        Manager::where('ma_id',$father_id)->setInc('ma_son');
+                    }
                     echo '2';
                     exit;
                 }

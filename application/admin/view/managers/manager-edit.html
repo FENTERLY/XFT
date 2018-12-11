@@ -2,11 +2,12 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>后台登录-X-admin1.1</title>
+    <title>编辑</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
     <link rel="stylesheet" href="__STATIC__/admin/css/font.css">
     <link rel="stylesheet" href="__STATIC__/admin/css/xadmin.css">
+    <script src="__STATIC__/admin/js/jquery-3.2.1.js"></script>
     <link rel="stylesheet" href="https://cdn.bootcss.com/Swiper/3.4.2/css/swiper.min.css">
     <script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
     <script type="text/javascript" src="https://cdn.bootcss.com/Swiper/3.4.2/js/swiper.jquery.min.js"></script>
@@ -14,24 +15,28 @@
     <script type="text/javascript" src="__STATIC__/admin/js/xadmin.js"></script>
 
 </head>
-<script>
-    $(function(){
-        $('#edits').submit(function(){
-            $.post('/index.php/Admin/Managers/edit',$('#edits').serialize(),function(msg){
-                if(msg==1)
-                {
-                    alert('已是最高级别的管理');
-                }
-                else if(msg==2)
-                {
-                    alert('数据编辑成功');
-                    $(location).attr('href','/index.php/admin/Managers/manager');
-                }
+    <script>
+        $(function(){
+            $('#edits').submit(function(){
+                $.post('/index.php/Admin/Managers/edit',$('#edits').serialize(),function(msg){
+                    if(msg==1)
+                    {
+                        alert('此管理已经是最高权限');
+                        return false;
+                    }
+                    else if(msg==2)
+                    {
+                        alert('数据编辑成功');
+                        $(location).attr('href','/index.php/admin/Managers/manager');
+                    }
+                    else{
+                        alert('数据编辑失败');
+                    }
+                });
                 return false;
             });
         });
-    });
-</script>
+    </script>
 <body>
     <!-- 中部开始 -->
     <div class="wrapper">
@@ -39,14 +44,26 @@
         <div class="page-content">
           <div class="content">
             <!-- 右侧内容框架，更改从这里开始 -->
-            <form class="layui-form" id="edits">
+            <form  class="layui-form" id="edits">
+                <div class="layui-form-item">
+                    <label for="ma_id" class="layui-form-label">
+                        管理ID
+                    </label>
+                    <div class="layui-input-inline">
+                        <input type="text" id="ma_id" name="ma_id" readonly="readonly" required lay-verify="required"
+                               autocomplete="off" value="<?php echo $ma['ma_id'];?>" class="layui-input">
+                    </div>
+                    <label class="layui-form-label" style="color: red">
+                        *ID不可编辑
+                    </label>
+                </div>
                 <div class="layui-form-item">
                     <label for="ma_name" class="layui-form-label">
                         管理名称
                     </label>
                     <div class="layui-input-inline">
-                        <input type="text" id="ma_name" name="ma_name" required lay-verify="ma_name"
-                        autocomplete="off" value="<?php echo $ma['ma_name'];?>" class="layui-input">
+                        <input type="text" id="ma_name" name="ma_name" required lay-verify="required"
+                               autocomplete="off" value="<?php echo $ma['ma_name'];?>" class="layui-input">
                     </div>
                 </div>
                 <div class="layui-form-item">
@@ -74,7 +91,7 @@
                     </div>
                 </div>
                 <div class="layui-form-item">
-                    <label for="L_sign" class="layui-form-label">
+                    <label class="layui-form-label">
                     </label>
                     <button class="layui-btn" type="submit" key="set-mine" lay-filter="save">
                         保存
