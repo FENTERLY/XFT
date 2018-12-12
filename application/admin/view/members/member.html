@@ -78,12 +78,12 @@
     <div class="page-content">
         <div class="content">
             <!-- 右侧内容框架，更改从这里开始 -->
-            <xblock><button class="layui-btn layui-btn-danger" onclick="delAll()"><i class="layui-icon">&#xe640;</i>批量删除</button><button class="layui-btn" onclick="member_add('添加用户','member-add.html','600','500')"><i class="layui-icon">&#xe608;</i>添加</button>
+            <xblock><button class="layui-btn layui-btn-danger" onclick="delAll()"><i class="layui-icon">&#xe640;</i>批量删除</button><button class="layui-btn" onclick="member_add('添加用户','add','600','500')"><i class="layui-icon">&#xe608;</i>添加</button>
             <table class="layui-table">
                 <thead>
                 <tr>
                     <th>
-                        <input type="checkbox" name="" value="">
+                        <input type="checkbox" onclick="checkAll()" id="qx">
                     </th>
                     <th>
                         ID
@@ -109,7 +109,7 @@
                 <?php foreach($member as $me):?>
                 <tr id="tr_{$me.user_id}">
                     <td>
-                        <input type="checkbox" value="1" name="">
+                        <input type="checkbox" name="ck[]" class="ck" value="{$me.user_id}">
                     </td>
                     <td>
                         <?php echo $me['user_id'];?>
@@ -200,6 +200,52 @@
                 }
             }
             $.get(url,data,success,"json");
+        }
+    }
+
+    /*批量删除*/
+    function delAll() {
+        //获取已经选中的目标里面的值
+        var ck = document.getElementsByClassName('ck');
+        if (confirm("确定要对选中的数据进行删除吗")) {
+        for (var i = 0; i < ck.length; i++) {
+            // 判断是否为选中
+            if (ck[i].checked) {
+                var d = ck[i].value;
+                    var url = "../Members/delall";//控制器中的方法
+                    var data = {'id': ck[i].value}//传来的id值
+                    var success = function (response) {       //如果php处理成功，调用此方法
+                        if (response.error == 0) {
+
+                        }
+                    }
+                    $.get(url,data,success,"json");
+                }
+            }
+            window.location.reload();
+
+        }
+    }
+
+    /*全部选中*/
+    function checkAll()
+    {
+        //取全选按钮的选中状态
+        var checkall = document.getElementById('qx').checked;
+
+        //让下面所有的checkbox选中状态改变
+        var ck = document.getElementsByClassName('ck');
+
+        for(var i=0;i<ck.length;i++)
+        {
+            if(checkall)
+            {
+                ck[i].checked = true;
+            }
+            else
+            {
+                ck[i].checked = false;
+            }
         }
     }
 </script>

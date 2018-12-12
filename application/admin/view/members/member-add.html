@@ -5,15 +5,60 @@
 	<title>后台登录-X-admin1.1</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
-    <link rel="stylesheet" href="./css/font.css">
-	<link rel="stylesheet" href="./css/xadmin.css">
+    <link rel="stylesheet" href="__STATIC__/admin/css/font.css">
+	<link rel="stylesheet" href="__STATIC__/admin/css/xadmin.css">
     <link rel="stylesheet" href="https://cdn.bootcss.com/Swiper/3.4.2/css/swiper.min.css">
     <script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
     <script type="text/javascript" src="https://cdn.bootcss.com/Swiper/3.4.2/js/swiper.jquery.min.js"></script>
-    <script src="./lib/layui/layui.js" charset="utf-8"></script>
-    <script type="text/javascript" src="./js/xadmin.js"></script>
+    <script src="__STATIC__/admin/lib/layui/layui.js" charset="utf-8"></script>
+    <script type="text/javascript" src="__STATIC__/admin/js/xadmin.js"></script>
 
 </head>
+<script>
+    $(function(){
+       $('#adds').submit(function(){
+           $.post('/index.php/Admin/Members/add',$('#adds').serialize(),function(msg){
+               if(msg==1)
+               {
+                   alert("用户名已存在");
+               }
+               else if(msg==2)
+               {
+                   alert("两次密码输入不一致");
+                   return false;
+               }
+               else if(msg==3)
+               {
+                   alert("添加成功");
+                   $(location).attr('href','/index.php/admin/Members/member');
+               }
+           });
+           return false;
+       });
+       //邮箱格式判断
+        $('#user_email').focus(function(){
+            $('#prompt').remove();
+        });
+        $('#user_email').blur(function(){
+            var emailVal = $.trim(this.value);
+            var myreg = /^([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/;
+            if(!myreg.test(emailVal))
+            {
+                $(this).parent().after("<span id='prompt' style='color: red'>*邮箱格式出错</span>");
+                $('#button1').attr('style','display:none');
+                $('#button2').attr('style','display:block');
+                $('#button2').attr('style','background-color:red');
+            }
+            else
+            {
+                $(this).parent().after("<span id='prompt' style='color: green'>*邮箱格式正确</span>");
+                $('#button1').attr('style','display:block');
+                $('#button2').attr('style','display:none');
+            }
+            return false;
+        });
+    });
+</script>
 <body>
     <!-- 中部开始 -->
     <div class="wrapper">
@@ -21,55 +66,50 @@
         <div class="page-content">
           <div class="content">
             <!-- 右侧内容框架，更改从这里开始 -->
-            <form class="layui-form">
+            <form class="layui-form" id="adds">
                 <div class="layui-form-item">
-                    <label for="L_email" class="layui-form-label">
+                    <label for="user_name" class="layui-form-label">
+                        <span class="x-red">*</span>用户名
+                    </label>
+                    <div class="layui-input-inline">
+                        <input type="text" id="user_name" name="user_name" required="" lay-verify="nikename"
+                        autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label for="user_email" class="layui-form-label">
                         <span class="x-red">*</span>邮箱
                     </label>
                     <div class="layui-input-inline">
-                        <input type="text" id="L_email" name="email" required="" lay-verify="email"
-                        autocomplete="off" class="layui-input">
-                    </div>
-                    <div class="layui-form-mid layui-word-aux">
-                        <span class="x-red">*</span>将会成为您唯一的登入名
+                        <input type="text" id="user_email" name="user_email" required="" lay-verify="email"
+                               autocomplete="off" class="layui-input">
                     </div>
                 </div>
                 <div class="layui-form-item">
-                    <label for="L_username" class="layui-form-label">
-                        <span class="x-red">*</span>昵称
-                    </label>
-                    <div class="layui-input-inline">
-                        <input type="text" id="L_username" name="username" required="" lay-verify="nikename"
-                        autocomplete="off" class="layui-input">
-                    </div>
-                </div>
-                <div class="layui-form-item">
-                    <label for="L_pass" class="layui-form-label">
+                    <label for="user_password" class="layui-form-label">
                         <span class="x-red">*</span>密码
                     </label>
                     <div class="layui-input-inline">
-                        <input type="password" id="L_pass" name="pass" required="" lay-verify="pass"
+                        <input type="password" id="user_password" name="user_password" required="" lay-verify="pass"
                         autocomplete="off" class="layui-input">
-                    </div>
-                    <div class="layui-form-mid layui-word-aux">
-                        6到16个字符
                     </div>
                 </div>
                 <div class="layui-form-item">
-                    <label for="L_repass" class="layui-form-label">
+                    <label for="user_password2" class="layui-form-label">
                         <span class="x-red">*</span>确认密码
                     </label>
                     <div class="layui-input-inline">
-                        <input type="password" id="L_repass" name="repass" required="" lay-verify="repass"
+                        <input type="password" id="user_password2" name="user_password2" required="" lay-verify="repass"
                         autocomplete="off" class="layui-input">
                     </div>
                 </div>
                 <div class="layui-form-item">
                     <label for="L_repass" class="layui-form-label">
                     </label>
-                    <button  class="layui-btn" lay-filter="add" lay-submit="">
+                    <button id="button1" class="layui-btn" lay-filter="add" lay-submit="" style="display: block;">
                         增加
                     </button>
+                    <button id="button2" style="display: none;" disabled="true">请确认输入内容正确</button>
                 </div>
             </form>
             <!-- 右侧内容框架，更改从这里结束 -->

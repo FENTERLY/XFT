@@ -41,6 +41,42 @@ class Members extends Controller
     //用户的添加
     public function add()
     {
+        if(!empty($_POST))
+        {
+            $names = Request::param('user_name');
+            $password = Request::param('user_password');
+            $password2 = Request::param('user_password2');
+            $emails = Request::param('user_email');
+            //查找数据库判断用户名是否存在
+            $name_exist = Member::where('user_name',$names)->find();
+            if($name_exist)
+            {
+                echo '1';
+                exit;
+            }
+            else if($password!=$password2)
+            {
+                echo '2';
+                exit;
+            }
+            else{
+                $res = Member::insert([
+                    'user_name' => $names,
+                    'user_email' => $emails,
+                    'user_password' => md5($password),
+                    'user_create' => date('Y-m-d H:i:s',time()),
+                ]);
+                if($res)
+                {
+                    echo '3';
+                    exit;
+                }
+            }
+
+        }
+        else{
+            return $this->fetch('member-add');
+        }
 
     }
 
@@ -119,6 +155,37 @@ class Members extends Controller
 
         echo json_encode($response);  //返回json数据
 
+    }
+
+
+    /*批量删除数据*/
+    public function delall()
+    {
+        if(Session::get('username')==NULL)
+        {
+
+            return $this->error('请先登录','login/login');
+
+        }
+        $id = input('get.id');  //接收前端Ajax传过来的数据
+        $result = Member::where('user_id',$id)->delete();  //删除此id对应的数据
+        if($result)
+        {
+            $response = array(
+                'error' => 0,
+                'errmsg' => 'success',
+                'data' => true
+            );
+        }
+        else{
+            $response = array(
+                'error' => -1,
+                'errmsg' => 'fail',
+                'data' => false
+            );
+        }
+
+        echo json_encode($response);  //返回json数据
     }
 
 }

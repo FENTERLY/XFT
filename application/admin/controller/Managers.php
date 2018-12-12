@@ -184,4 +184,34 @@ class Managers extends Controller
 
         echo json_encode($response);  //返回json数据
     }
+
+    /*批量删除数据*/
+    public function delall()
+    {
+        if(Session::get('username')==NULL)
+        {
+
+            return $this->error('请先登录','login/login');
+
+        }
+        $id = input('get.id');  //接收前端Ajax传过来的数据
+        $result = Manager::where('ma_id',$id)->delete();  //删除此id对应的数据
+        if($result)
+        {
+            $response = array(
+                'error' => 0,
+                'errmsg' => 'success',
+                'data' => true
+            );
+        }
+        else{
+            $response = array(
+                'error' => -1,
+                'errmsg' => 'fail',
+                'data' => false
+            );
+        }
+
+        echo json_encode($response);  //返回json数据
+    }
 }

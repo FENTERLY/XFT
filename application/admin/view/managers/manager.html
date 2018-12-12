@@ -84,7 +84,7 @@
                 <thead>
                     <tr>
                         <th>
-                            <input type="checkbox" name="" value="">
+                            <input type="checkbox" onclick="checkAll()" id="qx">
                         </th>
 
                         <th width="150px">
@@ -112,7 +112,7 @@
                 <?php foreach($managers as $ma):?>
                     <tr id="tr_{$ma.ma_id}">
                         <td>
-                            <input type="checkbox" value="1" name="">
+                            <input type="checkbox" name="ck[]" class="ck" value="{$ma.ma_id}">
                         </td>
 
                         <td>
@@ -207,6 +207,52 @@
                 $.get(url,data,success,"json");
             }
         }
+
+         /*批量删除*/
+         function delAll() {
+             //获取已经选中的目标里面的值
+             var ck = document.getElementsByClassName('ck');
+             if (confirm("确定要对选中的数据进行删除吗")) {
+                 for (var i = 0; i < ck.length; i++) {
+                     // 判断是否为选中
+                     if (ck[i].checked) {
+                         var d = ck[i].value;
+                         var url = "../Managers/delall";//控制器中的方法
+                         var data = {'id': ck[i].value}//传来的id值
+                         var success = function (response) {       //如果php处理成功，调用此方法
+                             if (response.error == 0) {
+
+                             }
+                         }
+                         $.get(url,data,success,"json");
+                     }
+                 }
+                 window.location.reload();
+
+             }
+         }
+
+         /*全部选中*/
+         function checkAll()
+         {
+             //取全选按钮的选中状态
+             var checkall = document.getElementById('qx').checked;
+
+             //让下面所有的checkbox选中状态改变
+             var ck = document.getElementsByClassName('ck');
+
+             for(var i=0;i<ck.length;i++)
+             {
+                 if(checkall)
+                 {
+                     ck[i].checked = true;
+                 }
+                 else
+                 {
+                     ck[i].checked = false;
+                 }
+             }
+         }
         </script>
 </body>
 </html>
