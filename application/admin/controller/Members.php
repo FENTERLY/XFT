@@ -9,6 +9,7 @@ namespace app\admin\controller;
 
 use app\admin\model\Manager;
 use app\admin\model\Member;
+use app\admin\model\Admin;
 use think\facade\Session;
 use think\Controller;
 use think\facade\Request;
@@ -17,7 +18,9 @@ class Members extends Controller
 {
     public function member()
     {
-        if(Session::get('username')==NULL)
+        //拿到session的name属性对管理员的表进行筛选查看是否有这个管理员
+        $username_is_manager = admin::where('admin_user',Session::get('username'))->find();
+        if($username_is_manager==NULL)
         {
 
             return $this->error('请先登录','login/login');
@@ -41,6 +44,14 @@ class Members extends Controller
     //用户的添加
     public function add()
     {
+        //拿到session的name属性对管理员的表进行筛选查看是否有这个管理员
+        $username_is_manager = admin::where('admin_user',Session::get('username'))->find();
+        if($username_is_manager==NULL)
+        {
+
+            return $this->error('请先登录','login/login');
+
+        }
         if(!empty($_POST))
         {
             $names = Request::param('user_name');
@@ -83,6 +94,14 @@ class Members extends Controller
     //用户的编辑
     public function edit()
     {
+        //拿到session的name属性对管理员的表进行筛选查看是否有这个管理员
+        $username_is_manager = admin::where('admin_user',Session::get('username'))->find();
+        if($username_is_manager==NULL)
+        {
+
+            return $this->error('请先登录','login/login');
+
+        }
         if(!empty($_POST))
         {
             $ids = Request::param('user_id');
@@ -129,7 +148,9 @@ class Members extends Controller
     //用户的删除
     public function del()
     {
-        if(Session::get('username')==NULL)
+        //拿到session的name属性对管理员的表进行筛选查看是否有这个管理员
+        $username_is_manager = admin::where('admin_user',Session::get('username'))->find();
+        if($username_is_manager==NULL)
         {
 
             return $this->error('请先登录','login/login');
@@ -161,7 +182,9 @@ class Members extends Controller
     /*批量删除数据*/
     public function delall()
     {
-        if(Session::get('username')==NULL)
+        //拿到session的name属性对管理员的表进行筛选查看是否有这个管理员
+        $username_is_manager = admin::where('admin_user',Session::get('username'))->find();
+        if($username_is_manager==NULL)
         {
 
             return $this->error('请先登录','login/login');

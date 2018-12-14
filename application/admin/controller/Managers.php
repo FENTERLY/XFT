@@ -11,13 +11,16 @@ use think\Controller;
 use app\admin\model\Manager;
 use think\facade\Session;
 use think\facade\Request;
+use app\admin\model\Admin;
 
 class Managers extends Controller
 {
     //管理列表
     public function manager()
     {
-        if(Session::get('username')==NULL)
+        //拿到session的name属性对管理员的表进行筛选查看是否有这个管理员
+        $username_is_manager = admin::where('admin_user',Session::get('username'))->find();
+        if($username_is_manager==NULL)
         {
 
             return $this->error('请先登录','login/login');
@@ -42,7 +45,9 @@ class Managers extends Controller
     //管理模块的添加
     public function add()
     {
-        if(Session::get('username')==NULL)
+        //拿到session的name属性对管理员的表进行筛选查看是否有这个管理员
+        $username_is_manager = admin::where('admin_user',Session::get('username'))->find();
+        if($username_is_manager==NULL)
         {
 
             return $this->error('请先登录','login/login');
@@ -99,7 +104,9 @@ class Managers extends Controller
     //管理模块的编辑
     public function edit()
     {
-        if(Session::get('username')==NULL)
+        //拿到session的name属性对管理员的表进行筛选查看是否有这个管理员
+        $username_is_manager = admin::where('admin_user',Session::get('username'))->find();
+        if($username_is_manager==NULL)
         {
 
             return $this->error('请先登录','login/login');
@@ -156,7 +163,9 @@ class Managers extends Controller
     //管理模块的删除
     public function del()
     {
-        if(Session::get('username')==NULL)
+        //拿到session的name属性对管理员的表进行筛选查看是否有这个管理员
+        $username_is_manager = admin::where('admin_user',Session::get('username'))->find();
+        if($username_is_manager==NULL)
         {
 
             return $this->error('请先登录','login/login');
@@ -188,7 +197,9 @@ class Managers extends Controller
     /*批量删除数据*/
     public function delall()
     {
-        if(Session::get('username')==NULL)
+        //拿到session的name属性对管理员的表进行筛选查看是否有这个管理员
+        $username_is_manager = admin::where('admin_user',Session::get('username'))->find();
+        if($username_is_manager==NULL)
         {
 
             return $this->error('请先登录','login/login');
