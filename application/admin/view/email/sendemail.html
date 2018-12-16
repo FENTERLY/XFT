@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>邮件发送</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+    <link rel="stylesheet" href="__STATIC__/admin/css/font.css">
+    <link rel="stylesheet" href="__STATIC__/admin/css/xadmin.css">
+    <link rel="stylesheet" href="https://cdn.bootcss.com/Swiper/3.4.2/css/swiper.min.css">
+    <script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdn.bootcss.com/Swiper/3.4.2/js/swiper.jquery.min.js"></script>
+    <script src="__STATIC__/admin/lib/layui/layui.js" charset="utf-8"></script>
+    <script type="text/javascript" src="__STATIC__/admin/js/xadmin.js"></script>
+
+    <!--富文本编辑器-->
+    <link rel="stylesheet" type="text/css" href="http://www.jq22.com/jquery/font-awesome.4.6.0.css">
+    <link href="__STATIC__/admin/editstyle/css/froala_editor.min.css" rel="stylesheet" type="text/css">
+    <script src="http://www.jq22.com/jquery/jquery-1.10.2.js"></script>
+    <script src="__STATIC__/admin/editstyle/js/froala_editor.min.js"></script>
+    <!--[if lt IE 9]>
+    <script src="__STATIC__/admin/editstyle/js/froala_editor_ie8.min.js"></script>
+    <![endif]-->
+    <script src="__STATIC__/admin/editstyle/js/plugins/tables.min.js"></script>
+    <script src="__STATIC__/admin/editstyle/js/plugins/lists.min.js"></script>
+    <script src="__STATIC__/admin/editstyle/js/plugins/colors.min.js"></script>
+    <script src="__STATIC__/admin/editstyle/js/plugins/media_manager.min.js"></script>
+    <script src="__STATIC__/admin/editstyle/js/plugins/font_family.min.js"></script>
+    <script src="__STATIC__/admin/editstyle/js/plugins/font_size.min.js"></script>
+    <script src="__STATIC__/admin/editstyle/js/plugins/block_styles.min.js"></script>
+    <script src="__STATIC__/admin/editstyle/js/plugins/video.min.js"></script>
+    <style>
+        section {
+            width: 80%;
+            margin-left: 110px;
+            text-align: left;
+        }
+    </style>
+    <script>
+        $(function(){
+            $('#edit').editable({inlineMode: false, alwaysBlank: true})
+        });
+    </script>
+</head>
+
+<body>
+    <!-- 顶部开始 -->
+    <!-- 顶部开始 -->
+    <div class="container">
+        <div class="logo"><a href="#">HelloMusic</a></div>
+        <div class="open-nav"><i class="iconfont">&#xe699;</i></div>
+        <ul class="layui-nav right" lay-filter="">
+            <li class="layui-nav-item">
+                <a href="javascript:;">
+                    <?php if($username):?><?php echo $username;?></a>
+                <dl class="layui-nav-child"> <!-- 二级菜单 -->
+                    <dd><a href="">个人信息</a></dd>
+                    <dd><a href="../login/login">退出</a></dd>
+                </dl>
+                <?php else:?><a href="../login/login">请先登录</a></a>
+                <?php endif?>
+            </li>
+            <li class="layui-nav-item"><a href="/">前台首页</a></li>
+        </ul>
+    </div>
+    <!-- 顶部结束 -->
+    <!-- 中部开始 -->
+    <div class="wrapper">
+        <!-- 左侧菜单开始 -->
+        <div class="left-nav">
+            <div id="side-nav">
+                <ul id="nav">
+                    <li class="list" current>
+                        <a href="../index/index">
+                            <i class="iconfont">&#xe761;</i>
+                            信息页面
+                        </a>
+                    </li>
+                    <?php foreach($manager as $ma):?>
+                    <li class="list">
+                        <?php if($ma['ma_son']==0):?><a href="<?php echo $ma['ma_address'];?>">
+                        <?php else:?><a href="#">
+                        <?php endif;?>
+                        <i class="iconfont">&#xe70b;</i>
+                        <?php echo $ma['ma_name'];?>
+                    </a>
+                        <?php if($ma['ma_son']!=0):?>
+                        <ul class="sub-menu" style="display:none">
+                            <?php foreach($manager2 as $ma2):?>
+                            <?php if($ma2['ma_father']==$ma['ma_id']):?>
+                            <li>
+                                <a href="<?php echo $ma2['ma_address'];?>">
+                                    <i class="iconfont">&#xe6a7;</i>
+                                    <?php echo $ma2['ma_name'];?>
+                                </a>
+                            </li>
+                            <?php endif;?>
+                            <?php endforeach;?>
+                        </ul>
+                        <?php endif;?>
+                    </li>
+                    <?php endforeach?>
+                </ul>
+            </div>
+        </div>
+        <!-- 左侧菜单结束 -->
+        <!-- 右侧主体开始 -->
+        <div class="page-content">
+          <div class="content">
+              <form class="layui-form" method="post" id="email_s">
+                  <div class="layui-form-item">
+                      <label for="email_theme" class="layui-form-label">
+                           <span class="x-red">*</span>标题
+                      </label>
+                      <div class="layui-input-inline">
+                          <input style="width: 500px;" type="text" id="email_theme" name="email_theme" required="" lay-verify="email_theme"
+                                   autocomplete="off" class="layui-input">
+                      </div>
+                  </div>
+                  <div class="layui-form-item">
+                      <label for="email_name" class="layui-form-label">
+                          <span class="x-red">*</span>收件人
+                      </label>
+                      <div class="layui-input-inline">
+                          <select id="email_name" name="email_name">
+                              <?php foreach($members as $m):?>
+                                  <option value="<?php echo $m['user_name'];?>"><?php echo $m['user_name'];?></option>
+                              <?php endforeach;?>
+                          </select>
+                      </div>
+                  </div>
+                  <div class="layui-form-item">
+                      <label for="email_massage" class="layui-form-label">
+                          <span class="x-red">*</span>内容添加
+                      </label>
+                  </div>
+                  <section id="editor">
+                      <div id='edit' name="email_message" style="margin-top: -40px;">
+                          <p id='p'>123</p>
+                      </div>
+                  </section>
+                  <div class="layui-form-item">
+                      <label for="email_send" class="layui-form-label">
+                      </label>
+                      <button  class="layui-btn" lay-filter="email_s" lay-submit="" type="submit" onclick="ho()">
+                          发送
+                      </button>
+                  </div>
+              </form>
+            <!-- 右侧内容框架，更改从这里结束 -->
+          </div>
+        </div>
+        <!-- 右侧主体结束 -->
+    </div>
+    <!-- 中部结束 -->
+    <!-- 底部开始 -->
+    <div class="footer">
+        <div class="copyright">Copyright ©XFT HelloMusic. </div>
+    </div>
+    <!-- 底部结束 -->
+    <!-- 背景切换开始 -->
+    <div class="bg-changer">
+        <div class="swiper-container changer-list">
+            <div class="swiper-wrapper">
+                <div class="swiper-slide"><img class="item" src="__STATIC__/admin/images/a.jpg" alt=""></div>
+                <div class="swiper-slide"><img class="item" src="__STATIC__/admin/images/b.jpg" alt=""></div>
+                <div class="swiper-slide"><img class="item" src="__STATIC__/admin/images/c.jpg" alt=""></div>
+                <div class="swiper-slide"><img class="item" src="__STATIC__/admin/images/d.jpg" alt=""></div>
+                <div class="swiper-slide"><img class="item" src="__STATIC__/admin/images/e.jpg" alt=""></div>
+                <div class="swiper-slide"><img class="item" src="__STATIC__/admin/images/f.jpg" alt=""></div>
+                <div class="swiper-slide"><img class="item" src="__STATIC__/admin/images/g.jpg" alt=""></div>
+                <div class="swiper-slide"><img class="item" src="__STATIC__/admin/images/h.jpg" alt=""></div>
+                <div class="swiper-slide"><img class="item" src="__STATIC__/admin/images/i.jpg" alt=""></div>
+                <div class="swiper-slide"><img class="item" src="__STATIC__/admin/images/j.jpg" alt=""></div>
+                <div class="swiper-slide"><img class="item" src="__STATIC__/admin/images/k.jpg" alt=""></div>
+            </div>
+        </div>
+        <div class="bg-out"></div>
+        <div id="changer-set"><i class="iconfont">&#xe696;</i></div>   
+    </div>
+    <!-- 背景切换结束 -->
+    <!-- 页面动态效果 -->
+    <script>
+        function ho(){
+            var a = document.getElementById('p').innerHTML;
+            alert(a);
+        }
+    </script>
+
+</body>
+</html>
