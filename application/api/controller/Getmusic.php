@@ -147,7 +147,7 @@ class Getmusic extends Controller
                         if ($res1 && $res2) {
                             echo '数据录入成功';
                         }
-                        exit;
+//                        exit;
                     }
 
                 }
