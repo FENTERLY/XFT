@@ -1,0 +1,242 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>后台管理</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+    <link rel="stylesheet" href="__STATIC__/admin/css/font.css">
+    <link rel="stylesheet" href="__STATIC__/admin/css/xadmin.css">
+    <link rel="stylesheet" href="__STATIC__/admin/css/Pages.css">
+    <link rel="stylesheet" href="https://cdn.bootcss.com/Swiper/3.4.2/css/swiper.min.css">
+    <script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdn.bootcss.com/Swiper/3.4.2/js/swiper.jquery.min.js"></script>
+    <script src="__STATIC__/admin/lib/layui/layui.js" charset="utf-8"></script>
+    <script type="text/javascript" src="__STATIC__/admin/js/xadmin.js"></script>
+
+</head>
+<body>
+    <!-- 顶部开始 -->
+    <div class="container">
+        <div class="logo"><a href="#">HelloMusic</a></div>
+        <div class="open-nav"><i class="iconfont">&#xe699;</i></div>
+        <ul class="layui-nav right" lay-filter="">
+          <li class="layui-nav-item">
+              <?php if($username):?><?php echo $username;?></a>
+              <dl class="layui-nav-child"> <!-- 二级菜单 -->
+                  <dd><a href="">个人信息</a></dd>
+                  <dd><a href="../login/login">退出</a></dd>
+              </dl>
+              <?php else:?><a href="../login/login">请先登录</a></a>
+              <?php endif?>
+          </li>
+          <li class="layui-nav-item"><a href="/">前台首页</a></li>
+        </ul>
+    </div>
+    <!-- 顶部结束 -->
+    <!-- 中部开始 -->
+    <div class="wrapper">
+        <!-- 左侧菜单开始 -->
+        <div class="left-nav">
+            <div id="side-nav">
+                <ul id="nav">
+                    <li class="list" current>
+                        <a href="../index/index">
+                            <i class="iconfont">&#xe761;</i>
+                            信息页面
+                        </a>
+                    </li>
+                    <?php foreach($manager as $ma):?>
+                    <li class="list">
+                        <?php if($ma['ma_son']==0):?><a href="<?php echo $ma['ma_address'];?>">
+                        <?php else:?><a href="#">
+                        <?php endif;?>
+                        <i class="iconfont">&#xe70b;</i>
+                        <?php echo $ma['ma_name'];?>
+                    </a>
+                        <?php if($ma['ma_son']!=0):?>
+                        <ul class="sub-menu" style="display:none">
+                            <?php foreach($manager2 as $ma2):?>
+                            <?php if($ma2['ma_father']==$ma['ma_id']):?>
+                            <li>
+                                <a href="<?php echo $ma2['ma_address'];?>">
+                                    <i class="iconfont">&#xe6a7;</i>
+                                    <?php echo $ma2['ma_name'];?>
+                                </a>
+                            </li>
+                            <?php endif;?>
+                            <?php endforeach;?>
+                        </ul>
+                        <?php endif;?>
+                    <?php endforeach?>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <!-- 左侧菜单结束 -->
+        <!-- 右侧主体开始 -->
+        <div class="page-content">
+          <div class="content">
+            <xblock><button class="layui-btn layui-btn-danger" onclick="delAll()">
+                <i class="layui-icon">&#xe640;</i>批量删除</button>
+            <table class="layui-table">
+                <thead>
+                    <tr>
+                        <th>
+                            <input type="checkbox" onclick="checkAll()" id="qx">
+                        </th>
+
+                        <th width="150px">
+                            ID
+                        </th>
+
+                        <th width="400px">
+                            歌单名称
+                        </th>
+
+                        <th width="400px">
+                            歌单海报
+                        </th>
+
+                        <th width="250px">
+                            收录歌曲数量
+                        </th>
+
+                        <th width="100px">
+                            操作
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                <?php foreach($playlist as $pl):?>
+                    <tr id="tr_{$pl.playlist_id}">
+                        <td>
+                            <input type="checkbox" name="ck[]" class="ck" value="{$pl.playlist_id}">
+                        </td>
+
+                        <td>
+                            <?php echo $pl['playlist_id'];?>
+                        </td>
+
+                        <td>
+                            <?php echo $pl['playlist_name'];?>
+                        </td>
+
+                        <td>
+                            <img src = "<?php echo $pl['playlist_img'];?>" style="width: 50px">
+                        </td>
+
+                        <td>
+                            <?php echo $pl['playlist_count'];?>
+                        </td>
+
+                        <td class="td-manage">
+                            <a title="删除" href="javascript:void(0);" onclick="playlist_del('{$pl.playlist_id}')"
+                            style="text-decoration:none">
+                                <i class="layui-icon">&#xe640;</i>
+                            </a>
+                        </td>
+                    </tr>
+                <?php endforeach;?>
+                </tbody>
+            </table>
+                <!--分页-->
+                <div id="pages">{$page|raw}</div>
+            <!-- 右侧内容框架，更改从这里结束 -->
+          </div>
+        </div>
+        <!-- 右侧主体结束 -->
+    </div>
+    <!-- 中部结束 -->
+    <!-- 底部开始 -->
+    <div class="footer">
+        <div class="copyright">Copyright ©XFT HelloMusic. </div>
+    </div>
+    <!-- 底部结束 -->
+    <!-- 背景切换开始 -->
+    <div class="bg-changer">
+        <div class="swiper-container changer-list">
+            <div class="swiper-wrapper">
+                <div class="swiper-slide"><img class="item" src="__STATIC__/admin/images/a.jpg" alt=""></div>
+                <div class="swiper-slide"><img class="item" src="__STATIC__/admin/images/b.jpg" alt=""></div>
+                <div class="swiper-slide"><img class="item" src="__STATIC__/admin/images/c.jpg" alt=""></div>
+                <div class="swiper-slide"><img class="item" src="__STATIC__/admin/images/d.jpg" alt=""></div>
+                <div class="swiper-slide"><img class="item" src="__STATIC__/admin/images/e.jpg" alt=""></div>
+                <div class="swiper-slide"><img class="item" src="__STATIC__/admin/images/f.jpg" alt=""></div>
+                <div class="swiper-slide"><img class="item" src="__STATIC__/admin/images/g.jpg" alt=""></div>
+                <div class="swiper-slide"><img class="item" src="__STATIC__/admin/images/h.jpg" alt=""></div>
+                <div class="swiper-slide"><img class="item" src="__STATIC__/admin/images/i.jpg" alt=""></div>
+                <div class="swiper-slide"><img class="item" src="__STATIC__/admin/images/j.jpg" alt=""></div>
+                <div class="swiper-slide"><img class="item" src="__STATIC__/admin/images/k.jpg" alt=""></div>
+            </div>
+        </div>
+        <div class="bg-out"></div>
+        <div id="changer-set"><i class="iconfont">&#xe696;</i></div>   
+    </div>
+    <!-- 背景切换结束 -->
+    <!-- 页面动态效果 -->
+    <script>
+        /*歌单-删除*/
+        function playlist_del(pid){
+            if(confirm("确定要删除吗"))
+            {
+                var url = "../Musicm/pldel";  //控制器中的方法
+                var data = {'id':pid};   //传来的参数
+                var success = function(response){       //如果php处理成功，调用此方法
+                    if(response.error==0)
+                    {
+                        document.getElementById('tr_'+pid).remove();      //把这个id的数据在html中自动删除
+                    }
+                }
+                $.get(url,data,success,"json");
+            }
+        }
+
+         /*批量删除*/
+         function delAll() {
+             //获取已经选中的目标里面的值
+             var ck = document.getElementsByClassName('ck');
+             if (confirm("确定要对选中的数据进行删除吗")) {
+                 for (var i = 0; i < ck.length; i++) {
+                     // 判断是否为选中
+                     if (ck[i].checked) {
+                         var d = ck[i].value;
+                         var url = "../Musicm/delall";//控制器中的方法
+                         var data = {'id': ck[i].value}//传来的id值
+                         var success = function (response) {       //如果php处理成功，调用此方法
+                             if (response.error == 0) {
+
+                             }
+                         }
+                         $.get(url,data,success,"json");
+                     }
+                 }
+                 window.location.reload();
+
+             }
+         }
+
+         /*全部选中*/
+         function checkAll()
+         {
+             //取全选按钮的选中状态
+             var checkall = document.getElementById('qx').checked;
+
+             //让下面所有的checkbox选中状态改变
+             var ck = document.getElementsByClassName('ck');
+
+             for(var i=0;i<ck.length;i++)
+             {
+                 if(checkall)
+                 {
+                     ck[i].checked = true;
+                 }
+                 else
+                 {
+                     ck[i].checked = false;
+                 }
+             }
+         }
+        </script>
+</body>
+</html>
