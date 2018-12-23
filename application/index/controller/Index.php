@@ -10,6 +10,13 @@ class Index extends Controller
 {
     public function index()
     {
+        $username_is_member = member::where('user_name',Session::get('username'))->find();
+        if($username_is_member==NULL)
+        {
+
+            return $this->error('请先登录','sign/login');
+
+        }
         $playlist = Playlist::limit(12)->select();
         $username = Session::get('username');
         $this->assign('username',$username);
@@ -108,5 +115,8 @@ class Index extends Controller
 
         echo json_encode($response);  //返回json数据
     }
+
+
+
 
 }

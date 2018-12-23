@@ -110,6 +110,9 @@ class Getmusic extends Controller
 
                     $music_all_output = $music_all_output->data;
 
+                    //获取歌曲的歌词
+                    $music_data_lyrics = $music_all_output->lyrics;
+
                     //获取歌曲的明星的图片
                     $music_data_img = $music_all_output->img;
 
@@ -138,6 +141,7 @@ class Getmusic extends Controller
                             'music_img' => $music_data_img,
                             'music_address' => $music_data_address,
                             'music_playlist' => $playlist_name,
+                            'music_lyrics' => $music_data_lyrics,
                         ]);
                         $res2 = Playlist::where('playlist_name', $playlist_name)->setDec('playlist_surplus');
 

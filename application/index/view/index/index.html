@@ -15,14 +15,6 @@
     <script src="__STATIC__/index/js/ie/html5shiv.js"></script>
     <script src="__STATIC__/index/js/ie/respond.min.js"></script>
     <script src="__STATIC__/index/js/ie/excanvas.js"></script>
-  <style>
-    .none{
-      display: none;
-    }
-    .block{
-     display: inline-block;
-    }
-  </style>
 </head>
 <body>
   <section class="vbox">
@@ -317,7 +309,7 @@
                                 <div id="divmusic_name">Hello Music</div>
                               </div>
                             </div>
-                            <div class="hidden-xs hidden-sm jp-current-time text-xs text-muted"></div>
+                            <div class="hidden-xs hidden-sm jp-current-time text-xs text-muted" id="music_lyrics"></div>
                             <div class="hidden-xs hidden-sm jp-duration text-xs text-muted"></div>
                             <div class="hidden-xs hidden-sm">
                               <a class="jp-mute" title="mute"><i class="icon-volume-2"></i></a>
@@ -378,12 +370,13 @@
             var success = function(response){       //如果php处理成功，调用此方法
                 if(response.error==0)
                 {
+                    $('.jp-pause').css('display','none');
+                    $('.jp-play').css('display','inline-block');
+                    $('#music_lyrics').unbind();//移除实时监控事件
+                    document.getElementById('divmusic_name').innerText = response.music_name;
                     document.getElementById('music_name_'+pid).innerText = response.music_name;
                     // document.getElementById('music_play_'+pid).src = response.music_address;
                     document.getElementById('jp_audio_0').src = response.music_address;
-                    document.getElementById('divmusic_name').innerText = response.music_name;
-                    $('.jp-pause').css('display','none');
-                    $('.jp-play').css('display','inline-block');
                 }
             }
             $.get(url,data,success,"json");
@@ -398,8 +391,8 @@
             var success = function(response){       //如果php处理成功，调用此方法
                 if(response.error==0)
                 {
-                    document.getElementById('jp_audio_0').src = response.music_address;
                     document.getElementById('divmusic_name').innerText = response.music_name;
+                    document.getElementById('jp_audio_0').src = response.music_address;
                     $('.jp-pause').css('display','none');
                     $('.jp-play').css('display','inline-block');
                 }
@@ -416,8 +409,8 @@
           var success = function(response){       //如果php处理成功，调用此方法
               if(response.error==0)
               {
-                  document.getElementById('jp_audio_0').src = response.music_address;
                   document.getElementById('divmusic_name').innerText = response.music_name;
+                  document.getElementById('jp_audio_0').src = response.music_address;
                   $('.jp-pause').css('display','none');
                   $('.jp-play').css('display','inline-block');
               }
@@ -425,6 +418,24 @@
           $.get(url,data,success,"json");
       }
 
+      /**
+       * 音乐实时监听
+       **/
+      $('.jp-play').click(function(){
+          var mnames = document.getElementById('divmusic_name').innerText;
+          $('#music_lyrics').on('DOMNodeInserted',function(){
+              var times = $('#music_lyrics').text();
+              var url = "../GetLyrics/music_lyrics"; //控制器中的方法
+              var data = {'mname':mnames,'mtime':times};
+              var success = function(response){
+                  if(response.error==0)
+                  {
+                      document.getElementById('divmusic_name').innerText = response.music_lyrics;
+                  }
+              }
+              $.get(url,data,success,"json");
+          });
+      })
       </script>
 </body>
 </html>
