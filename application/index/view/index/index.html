@@ -227,27 +227,33 @@
 
 
                   <div class="row">
+
+
                     <div class="col-md-7">
-                      <h3 class="font-thin">New Songs</h3>
-                      <div class="row row-sm">
-                        <div class="col-xs-6 col-sm-3">
-                          <div class="item">
-                            <div class="pos-rlt">
-                              <div class="item-overlay opacity r r-2x bg-black">
-                                <div class="center text-center m-t-n">
-                                  <a href="#"><i class="fa fa-play-circle i-2x"></i></a>
+                      <h3 class="font-thin">Singer</h3>
+                        <div class="row row-sm">
+                          <?php foreach($singer as $s):?>
+                            <div class="col-xs-6 col-sm-3">
+                              <div class="item">
+                                <div class="pos-rlt">
+                                  <div class="item-overlay opacity r r-2x bg-black">
+                                    <div class="center text-center m-t-n">
+                                      <a href="#"><i class="fa fa-play-circle i-2x"></i></a>
+                                    </div>
+                                  </div>
+                                  <a href="#"><img src="<?php echo $s['singer_img'];?>" alt="" class="r r-2x img-full"></a>
+                                </div>
+                                <div class="padder-v">
+                                  <a href="#" class="text-ellipsis"><?php echo $s['singer_name'];?></a>
+                                  <a href="#" class="text-ellipsis text-xs text-muted">Hello Music</a>
                                 </div>
                               </div>
-                              <a href="#"><img src="__STATIC__/index/images/a2.png" alt="" class="r r-2x img-full"></a>
                             </div>
-                            <div class="padder-v">
-                              <a href="#" class="text-ellipsis">Spring rain</a>
-                              <a href="#" class="text-ellipsis text-xs text-muted">Miaow</a>
-                            </div>
-                          </div>
+                          <?php endforeach;?>
                         </div>
-                      </div>
                     </div>
+
+
                     <div class="col-md-5">
                       <h3 class="font-thin">Top Songs</h3>
                       <div class="list-group bg-white list-group-lg no-bg auto">                          

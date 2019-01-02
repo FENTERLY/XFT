@@ -5,6 +5,7 @@ use think\facade\Session;
 use app\index\model\Music;
 use app\index\model\Playlist;
 use app\index\model\Member;
+use app\index\model\Singer;
 use app\api\controller\Getplaylist;
 use think\facade\Cache;
 
@@ -23,8 +24,10 @@ class Index extends Controller
 
         }
         $playlist = Playlist::limit(12)->order('playlist_id','desc')->select();
+        $singer = Singer::limit(8)->select();
         $username = Session::get('username');
         $this->assign('username',$username);
+        $this->assign('singer',$singer);
         $this->assign('playlist',$playlist);
         return $this->fetch();
     }
