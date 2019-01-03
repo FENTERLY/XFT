@@ -7,7 +7,6 @@
  */
 namespace app\api\controller;
 use think\Controller;
-use think\facade\Cache;
 use app\index\model\Singer;
 
 class Getsinger extends Controller
@@ -17,7 +16,8 @@ class Getsinger extends Controller
     **/
     public function getsinger()
     {
-        $music_singer_html = $this->AccessPage('www.kugou.com/yy/html/singer.html');
+        $acc = new AccessPages();
+        $music_singer_html = $acc->AccessPage('www.kugou.com/yy/html/singer.html');
         preg_match_all('/<ul id="list_head" class="clear_fix">(.*?)<\/ul>/mis',$music_singer_html,$music_match);
         //获取到歌手的信息页面在信息页面进行爬取歌手的资料
         preg_match_all('/<li .*?>(.*?)<\/li>/mis',$music_match[0][0],$music_singer);
@@ -29,7 +29,7 @@ class Getsinger extends Controller
             preg_match_all('/<a .*? href="(.*?)">(.*?)<\/a>/mis', $music_singer[0][$i], $music_singer_url);
             $music_singer_url = str_replace('https', 'http', $music_singer_url[1][0]);
 
-            $singer_html = $this->AccessPage($music_singer_url);
+            $singer_html = $acc->AccessPage($music_singer_url);
             preg_match_all('/<div class="clear_fix">(.*?)<\/div>/mis',$singer_html,$singer_name);
             //$singer_name存入歌手名字
             $singer_name = trim(strip_tags($singer_name[1][0]));
@@ -93,27 +93,4 @@ class Getsinger extends Controller
 
     }
 
-    /**
-     * 获取页面
-     **/
-    public function AccessPage($url)
-    {
-        //初始curl会话
-        $ch = curl_init();
-
-        curl_setopt($ch,CURLOPT_URL,$url);
-
-        //参数是否返回请求结果
-        curl_setopt($ch,CURLOPT_RETURNTRANSFER,1);
-        //头部是否以数据流输出
-        curl_setopt($ch,CURLOPT_HEADER,0);
-        //设置请求超时时间
-        curl_setopt($ch,CURLOPT_TIMEOUT,100);
-
-        $output = curl_exec($ch);
-        //释放curl句柄
-        curl_close($ch);
-
-        return $output;
-    }
 }

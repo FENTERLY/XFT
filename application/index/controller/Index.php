@@ -1,12 +1,13 @@
 <?php
 namespace app\index\controller;
+use app\index\model\Newsong;
 use think\Controller;
 use think\facade\Session;
 use app\index\model\Music;
 use app\index\model\Playlist;
 use app\index\model\Member;
 use app\index\model\Singer;
-use app\api\controller\Getplaylist;
+use app\api\controller\AccessPages;
 use think\facade\Cache;
 
 class Index extends Controller
@@ -25,10 +26,12 @@ class Index extends Controller
         }
         $playlist = Playlist::limit(12)->order('playlist_id','desc')->select();
         $singer = Singer::limit(8)->select();
+        $newsong = Newsong::limit(7)->order('newsong_id','desc')->select();
         $username = Session::get('username');
         $this->assign('username',$username);
         $this->assign('singer',$singer);
         $this->assign('playlist',$playlist);
+        $this->assign('newsong',$newsong);
         return $this->fetch();
     }
 
@@ -83,7 +86,7 @@ class Index extends Controller
         $get_music_message3 = '&cmd=playInfo';
         $get_music_mp3url = $get_music_message2 . $music_address . $get_music_message3;
 
-        $music = new Getplaylist();
+        $music = new AccessPages();
         $music_all_output2 = $music->AccessPage($get_music_mp3url);
 
         $music_all_output2 = json_decode($music_all_output2);

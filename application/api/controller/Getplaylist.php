@@ -7,7 +7,6 @@
  */
 namespace app\api\controller;
 use think\Controller;
-use app\admin\model\Music;
 use app\admin\model\Playlist;
 
 class Getplaylist extends Controller
@@ -18,7 +17,8 @@ class Getplaylist extends Controller
     public function getplaylist()
     {
         $index_url = 'www.kugou.com';
-        $index_output = $this->AccessPage($index_url);
+        $acc = new AccessPages();
+        $index_output = $acc->AccessPage($index_url);
 
         //获取歌单列表链接
         preg_match_all('/<a target="_blank" href="(.*?)" class="more fr">.*?<\/a>/',$index_output,$album_url);
@@ -27,7 +27,7 @@ class Getplaylist extends Controller
 
 
         //读取歌单列表里面的内容
-        $album_output = $this->AccessPage($album_urls);
+        $album_output = $acc->AccessPage($album_urls);
 
         //获取所有歌单的链接
         preg_match_all('/<ul id="ulAlbums">.*?<\/ul>/mis',$album_output,$album_ul);
@@ -45,7 +45,7 @@ class Getplaylist extends Controller
         foreach($album_list['url'] as $k => $album_list_music)
         {
 
-            $album_li_output = $this->AccessPage($album_list_music);
+            $album_li_output = $acc->AccessPage($album_list_music);
 
             //获取到各个歌单里面的歌曲
             preg_match_all('/<a title="(.*?)" hidefocus="true" href="javascript:;" data="(.*?)">(.*?)<\/a>/m',$album_li_output,$album_li_a);
@@ -89,27 +89,4 @@ class Getplaylist extends Controller
         }
     }
 
-    /**
-     * 获取页面
-     **/
-    public function AccessPage($url)
-    {
-        //初始curl会话
-        $ch = curl_init();
-
-        curl_setopt($ch,CURLOPT_URL,$url);
-
-        //参数是否返回请求结果
-        curl_setopt($ch,CURLOPT_RETURNTRANSFER,1);
-        //头部是否以数据流输出
-        curl_setopt($ch,CURLOPT_HEADER,0);
-        //设置请求超时时间
-        curl_setopt($ch,CURLOPT_TIMEOUT,100);
-
-        $output = curl_exec($ch);
-        //释放curl句柄
-        curl_close($ch);
-
-        return $output;
-    }
 }
