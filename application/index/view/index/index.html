@@ -129,47 +129,7 @@
                 <!-- / nav -->
               </div>
             </section>
-            
-            <footer class="footer hidden-xs no-padder text-center-nav-xs">
-              <div class="bg hidden-xs ">
-                  <div class="dropdown dropup wrapper-sm clearfix">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                      <span class="thumb-sm avatar pull-left m-l-xs">                        
-                        <img src="__STATIC__/index/images/a3.png" class="dker" alt="...">
-                        <i class="on b-black"></i>
-                      </span>
-                      <span class="hidden-nav-xs clear">
-                        <span class="block m-l">
-                          <strong class="font-bold text-lt">John.Smith</strong> 
-                          <b class="caret"></b>
-                        </span>
-                        <span class="text-muted text-xs block m-l">Art Director</span>
-                      </span>
-                    </a>
-                    <ul class="dropdown-menu animated fadeInRight aside text-left">                      
-                      <li>
-                        <span class="arrow bottom hidden-nav-xs"></span>
-                        <a href="#">Settings</a>
-                      </li>
-                      <li>
-                        <a href="profile.html">Profile</a>
-                      </li>
-                      <li>
-                        <a href="#">
-                          <span class="badge bg-danger pull-right">3</span>
-                          Notifications
-                        </a>
-                      </li>
-                      <li>
-                        <a href="docs.html">Help</a>
-                      </li>
-                      <li class="divider"></li>
-                      <li>
-                        <a href="modal.lockme.html" data-toggle="ajaxModal" >Logout</a>
-                      </li>
-                    </ul>
-                  </div>
-                </div>            </footer>
+
           </section>
         </aside>
         <!-- /.aside -->
@@ -235,14 +195,12 @@
                           <?php foreach($singer as $s):?>
                             <div class="col-xs-6 col-sm-3">
                               <div class="item">
-                                <div class="pos-rlt">
-                                  <div class="item-overlay opacity r r-2x bg-black">
-                                    <div class="center text-center m-t-n">
-                                      <a href="#"><i class="fa fa-play-circle i-2x"></i></a>
-                                    </div>
+                                <a href="/index.php/index/listen/listen?singer=<?php echo $s['singer_name'];?>">
+                                  <div class="pos-rlt">
+                                    <div class="item-overlay opacity r r-2x bg-black"></div>
+                                    <img src="<?php echo $s['singer_img'];?>" alt="" class="r r-2x img-full">
                                   </div>
-                                  <a href="#"><img src="<?php echo $s['singer_img'];?>" alt="" class="r r-2x img-full"></a>
-                                </div>
+                                </a>
                                 <div class="padder-v">
                                   <a href="#" class="text-ellipsis"><?php echo $s['singer_name'];?></a>
                                   <a href="#" class="text-ellipsis text-xs text-muted">Hello Music</a>
@@ -255,6 +213,7 @@
 
 
                     <div class="col-md-5">
+                      <a href="/index.php/index/morelist/newsong" class="pull-right text-muted m-t-lg" >更多</a>
                       <h3 class="font-thin">New Songs</h3>
                       <?php foreach($newsong as $ns):?>
                         <div class="list-group bg-white list-group-lg no-bg auto">

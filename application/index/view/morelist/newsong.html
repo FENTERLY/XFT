@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en" class="app">
+<head>
+  <meta charset="utf-8" />
+  <title>Musik | Web Application</title>
+  <meta name="description" content="app, web app, responsive, admin dashboard, admin, flat, flat ui, ui kit, off screen nav" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <link rel="stylesheet" href="__STATIC__/index/js/jPlayer/jplayer.flat.css" type="text/css" />
+  <link rel="stylesheet" href="__STATIC__/index/css/bootstrap.css" type="text/css" />
+  <link rel="stylesheet" href="__STATIC__/index/css/animate.css" type="text/css" />
+  <link rel="stylesheet" href="__STATIC__/index/css/font-awesome.min.css" type="text/css" />
+  <link rel="stylesheet" href="__STATIC__/index/css/simple-line-icons.css" type="text/css" />
+  <link rel="stylesheet" href="__STATIC__/index/css/font.css" type="text/css" />
+  <link rel="stylesheet" href="__STATIC__/index/css/app.css" type="text/css" />
+  <link rel="stylesheet" href="__STATIC__/index/css/Pages.css">
+  <script src="__STATIC__/index/js/ie/html5shiv.js"></script>
+  <script src="__STATIC__/index/js/ie/respond.min.js"></script>
+  <script src="__STATIC__/index/js/ie/excanvas.js"></script>
+</head>
+<body>
+<section class="vbox">
+  <header class="bg-white-only header header-md navbar navbar-fixed-top-xs">
+    <div class="navbar-header aside bg-info nav-xs">
+      <a class="btn btn-link visible-xs" data-toggle="class:nav-off-screen,open" data-target="#nav,html">
+        <i class="icon-list"></i>
+      </a>
+      <a href="../index/index.html" class="navbar-brand text-lt">
+        <i class="icon-earphones"></i>
+        <img src="__STATIC__/index/images/logo.png" alt="." class="hide">
+        <span class="hidden-nav-xs m-l-sm">Musik</span>
+      </a>
+      <a class="btn btn-link visible-xs" data-toggle="dropdown" data-target=".user">
+        <i class="icon-settings"></i>
+      </a>
+    </div>      <ul class="nav navbar-nav hidden-xs">
+    <li>
+      <a href="#nav,.navbar-header" data-toggle="class:nav-xs,nav-xs" class="text-muted">
+        <i class="fa fa-indent text"></i>
+        <i class="fa fa-dedent text-active"></i>
+      </a>
+    </li>
+  </ul>
+    <form class="navbar-form navbar-left input-s-lg m-t m-l-n-xs hidden-xs" role="search">
+      <div class="form-group">
+        <div class="input-group">
+            <span class="input-group-btn">
+              <button type="submit" class="btn btn-sm bg-white btn-icon rounded"><i class="fa fa-search"></i></button>
+            </span>
+          <input type="text" class="form-control input-sm no-border rounded" placeholder="Search songs, albums...">
+        </div>
+      </div>
+    </form>
+    <div class="navbar-right ">
+      <ul class="nav navbar-nav m-n hidden-xs nav-user user">
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle bg clear" data-toggle="dropdown">
+              <span class="thumb-sm avatar pull-right m-t-n-sm m-b-n-sm m-l-sm">
+                <img src="__STATIC__/index/images/a0.png" alt="...">
+              </span>
+            <?php if($username):?><?php echo $username;?>
+            <?php else:?>请先登录
+            <?php endif;?>
+            <b class="caret"></b>
+          </a>
+          <ul class="dropdown-menu animated fadeInRight">
+            <li>
+              <a href="/index.php/index/sign/register">注册</a>
+            </li>
+            <li class="divider"></li>
+            <li>
+              <?php if($username):?><a href="/index.php/index/sign/login">切换用户</a>
+              <?php else:?><a href="/index.php/index/sign/login">登录</a>
+              <?php endif;?>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </header>
+  <section>
+    <section class="hbox stretch">
+      <!-- .aside -->
+      <aside class="bg-black dk nav-xs aside hidden-print" id="nav">
+        <section class="vbox">
+          <section class="w-f-md scrollable">
+            <div class="slim-scroll" data-height="auto" data-disable-fade-out="true" data-distance="0" data-size="10px" data-railOpacity="0.2">
+
+
+
+              <!-- nav -->
+              <nav class="nav-primary hidden-xs">
+                <ul class="nav bg clearfix">
+                  <li class="hidden-nav-xs padder m-t m-b-sm text-xs text-muted">
+                    Discover
+                  </li>
+                  <li>
+                    <a href="../index/index.html">
+                      <i class="icon-disc icon text-success"></i>
+                      <span class="font-bold">What's new</span>
+                    </a>
+                  </li>
+                  <li>
+                    <a href="genres.html">
+                      <i class="icon-music-tone-alt icon text-info"></i>
+                      <span class="font-bold">Genres</span>
+                    </a>
+                  </li>
+                  <li>
+                    <a href="events.html">
+                      <i class="icon-drawer icon text-primary-lter"></i>
+                      <b class="badge bg-primary pull-right">6</b>
+                      <span class="font-bold">Events</span>
+                    </a>
+                  </li>
+                  <li>
+                    <a href="listen.html">
+                      <i class="icon-list icon  text-info-dker"></i>
+                      <span class="font-bold">Listen</span>
+                    </a>
+                  </li>
+                  <li>
+                    <a href="video.html" data-target="#content" data-el="#bjax-el" data-replace="true">
+                      <i class="icon-social-youtube icon  text-primary"></i>
+                      <span class="font-bold">Video</span>
+                    </a>
+                  </li>
+                  <li class="m-b hidden-nav-xs"></li>
+                </ul>
+              </nav>
+              <!-- / nav -->
+            </div>
+          </section>
+
+        </section>
+      </aside>
+      <!-- /.aside -->
+      <section id="content">
+        <section class="hbox stretch">
+          <section>
+            <section class="vbox">
+              <section class="scrollable padder-lg w-f-md" id="bjax-target">
+                <h2 class="font-thin m-b">Hello Music<span class="musicbar animate inline m-l-sm" style="width:20px;height:20px">
+                    <span class="bar1 a1 bg-primary lter"></span>
+                    <span class="bar2 a2 bg-info lt"></span>
+                    <span class="bar3 a3 bg-success"></span>
+                    <span class="bar4 a4 bg-warning dk"></span>
+                    <span class="bar5 a5 bg-danger dker"></span>
+                  </span></h2>
+                <div class="row row-sm">
+                  <?php foreach($newsong as $ns):?>
+                  <div class="col-xs-6 col-sm-4 col-md-3 col-lg-2">
+                    <div class="item">
+                      <div class="pos-rlt">
+                        <div class="item-overlay opacity r r-2x bg-black">
+                          <div class="text-info padder m-t-sm text-sm">
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star-o text-muted"></i>
+                          </div>
+                          <!--播放按钮-->
+                          <div class="center text-center m-t-n">
+                            <a href="#" onclick="GetsSong('{$ns.newsong_name}')">
+                              <i class="icon-control-play i-2x text"></i>
+                            </a>
+                          </div>
+                          <div class="bottom padder m-b-sm">
+                            <a href="#" class="pull-right">
+                              <i class="fa fa-heart-o"></i>
+                            </a>
+                            <a href="#">
+                              <i class="fa fa-plus-circle"></i>
+                            </a>
+                          </div>
+                        </div>
+                        <a href="#"><img src="<?php echo $ns['newsong_img'];?>" alt="" class="r r-2x img-full"></a>
+                      </div>
+                      <div class="padder-v">
+                        <a href="#" class="text-ellipsis"><?php echo $ns['newsong_name'];?></a>
+                        <a href="#" class="text-ellipsis text-xs text-muted"><?php echo $ns['newsong_singer'];?></a>
+                      </div>
+                    </div>
+                  </div>
+                  <?php endforeach;?>
+                </div>
+                <!--分页-->
+                <div id="pages">{$page|raw}</div>
+
+              </section>
+
+              <footer class="footer bg-dark">
+                <div id="jp_container_N">
+                  <div class="jp-type-playlist">
+                    <div id="jplayer_N" class="jp-jplayer hide"></div>
+                    <div class="jp-gui">
+                      <div class="jp-video-play hide">
+                        <a class="jp-video-play-icon">play</a>
+                      </div>
+                      <div class="jp-interface">
+                        <div class="jp-controls">
+                          <div><a class="jp-previous" onclick="music_previous()"><i class="icon-control-rewind i-lg"></i></a></div>
+                          <div>
+                            <a class="jp-play"><i class="icon-control-play i-2x"></i></a>
+                            <a class="jp-pause hid"><i class="icon-control-pause i-2x"></i></a>
+                          </div>
+                          <div><a class="jp-next" onclick="music_next()"><i class="icon-control-forward i-lg"></i></a></div>
+                          <div class="hide"><a class="jp-stop"><i class="fa fa-stop"></i></a></div>
+
+                          <div class="jp-progress hidden-xs">
+                            <div class="jp-seek-bar dk">
+                              <div class="jp-play-bar bg-info">
+                              </div>
+                              <div id="divmusic_name">Hello Music</div>
+                            </div>
+                          </div>
+                          <div class="hidden-xs hidden-sm jp-current-time text-xs text-muted" id="music_lyrics"></div>
+                          <div class="hidden-xs hidden-sm jp-duration text-xs text-muted"></div>
+                          <div class="hidden-xs hidden-sm">
+                            <a class="jp-mute" title="mute"><i class="icon-volume-2"></i></a>
+                            <a class="jp-unmute hid" title="unmute"><i class="icon-volume-off"></i></a>
+                          </div>
+                          <div class="hidden-xs hidden-sm jp-volume">
+                            <div class="jp-volume-bar dk">
+                              <div class="jp-volume-bar-value lter"></div>
+                            </div>
+                          </div>
+                          <div>
+                            <a class="jp-shuffle" title="shuffle"><i class="icon-shuffle text-muted"></i></a>
+                            <a class="jp-shuffle-off hid" title="shuffle off"><i class="icon-shuffle text-lt"></i></a>
+                          </div>
+                          <div class="hide">
+                            <a class="jp-full-screen" title="full screen"><i class="fa fa-expand"></i></a>
+                            <a class="jp-restore-screen" title="restore screen"><i class="fa fa-compress text-lt"></i></a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="jp-playlist dropup" id="playlist">
+                      <ul class="dropdown-menu aside-xl dker">
+                        <!-- The method Playlist.displayPlaylist() uses this unordered list -->
+                        <li class="list-group-item"></li>
+                      </ul>
+                    </div>
+                    <div class="jp-no-solution hide">
+                      <span>Update Required</span>
+                      To play the media you will need to either update your browser to a recent version or update your <a href="http://get.adobe.com/flashplayer/" target="_blank">Flash plugin</a>.
+                    </div>
+                  </div>
+                </div>
+              </footer>
+            </section>
+
+            <a href="#" class="hide nav-off-screen-block" data-toggle="class:nav-off-screen,open" data-target="#nav,html"></a>
+          </section>
+        </section>
+      </section>
+    </section>
+    <script src="__STATIC__/index/js/jquery.min.js"></script>
+    <!-- Bootstrap -->
+    <script src="__STATIC__/index/js/bootstrap.js"></script>
+    <!-- App -->
+    <script src="__STATIC__/index/js/app.js"></script>
+    <script src="__STATIC__/index/js/slimscroll/jquery.slimscroll.min.js"></script>
+    <script src="__STATIC__/index/js/app.plugin.js"></script>
+    <script type="text/javascript" src="__STATIC__/index/js/jPlayer/jquery.jplayer.min.js"></script>
+    <script type="text/javascript" src="__STATIC__/index/js/jPlayer/add-on/jplayer.playlist.min.js"></script>
+    <script type="text/javascript" src="__STATIC__/index/js/jPlayer/demo.js"></script>
+    <script type="text/javascript" src="__STATIC__/index/js/index.js"></script>
+</body>
+</html>

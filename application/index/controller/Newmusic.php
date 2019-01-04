@@ -8,7 +8,6 @@
 namespace app\index\controller;
 use app\index\model\Newsong;
 use think\Controller;
-use think\Cache;
 use app\api\controller\AccessPages;
 
 class Newmusic extends Controller

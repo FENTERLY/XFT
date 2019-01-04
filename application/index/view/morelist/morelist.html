@@ -130,47 +130,7 @@
                 <!-- / nav -->
               </div>
             </section>
-            
-            <footer class="footer hidden-xs no-padder text-center-nav-xs">
-              <div class="bg hidden-xs ">
-                  <div class="dropdown dropup wrapper-sm clearfix">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                      <span class="thumb-sm avatar pull-left m-l-xs">                        
-                        <img src="__STATIC__/index/images/a3.png" class="dker" alt="...">
-                        <i class="on b-black"></i>
-                      </span>
-                      <span class="hidden-nav-xs clear">
-                        <span class="block m-l">
-                          <strong class="font-bold text-lt">John.Smith</strong> 
-                          <b class="caret"></b>
-                        </span>
-                        <span class="text-muted text-xs block m-l">Art Director</span>
-                      </span>
-                    </a>
-                    <ul class="dropdown-menu animated fadeInRight aside text-left">                      
-                      <li>
-                        <span class="arrow bottom hidden-nav-xs"></span>
-                        <a href="#">Settings</a>
-                      </li>
-                      <li>
-                        <a href="profile.html">Profile</a>
-                      </li>
-                      <li>
-                        <a href="#">
-                          <span class="badge bg-danger pull-right">3</span>
-                          Notifications
-                        </a>
-                      </li>
-                      <li>
-                        <a href="docs.html">Help</a>
-                      </li>
-                      <li class="divider"></li>
-                      <li>
-                        <a href="modal.lockme.html" data-toggle="ajaxModal" >Logout</a>
-                      </li>
-                    </ul>
-                  </div>
-                </div>            </footer>
+
           </section>
         </aside>
         <!-- /.aside -->
@@ -306,98 +266,6 @@
   <script type="text/javascript" src="__STATIC__/index/js/jPlayer/jquery.jplayer.min.js"></script>
   <script type="text/javascript" src="__STATIC__/index/js/jPlayer/add-on/jplayer.playlist.min.js"></script>
   <script type="text/javascript" src="__STATIC__/index/js/jPlayer/demo.js"></script>
-      <script>
-      // 将歌单的名字传到后台
-        function GetsMusic(pnames,pid)
-        {
-            var url = "../Index/getsmusic";  //控制器中的方法
-            var data = {'pname':pnames};   //传来的参数
-            var success = function(response){       //如果php处理成功，调用此方法
-                if(response.error==0)
-                {
-                    $('.jp-pause').css('display','none');
-                    $('.jp-play').css('display','inline-block');
-                    $('#music_lyrics').unbind();//移除实时监控事件
-                    document.getElementById('divmusic_name').innerText = response.music_name;
-                    document.getElementById('music_name_'+pid).innerText = response.music_name;
-                    // document.getElementById('music_play_'+pid).src = response.music_address;
-                    document.getElementById('jp_audio_0').src = response.music_address;
-                }
-            }
-            $.get(url,data,success,"json");
-        }
-
-        //下一首音乐的播放
-        function music_next()
-        {
-            var mnames = document.getElementById('divmusic_name').innerText;
-            var url = "../Index/music_next";  //控制器中的方法
-            var data = {'mname':mnames};
-            var success = function(response){       //如果php处理成功，调用此方法
-                if(response.error==0)
-                {
-                    $('#music_lyrics').unbind();//移除实时监控事件
-                    document.getElementById('divmusic_name').innerText = response.music_name;
-                    document.getElementById('jp_audio_0').src = response.music_address;
-                    $('.jp-pause').css('display','none');
-                    $('.jp-play').css('display','inline-block');
-                }
-            }
-            $.get(url,data,success,"json");
-        }
-
-      //上一首音乐的播放
-      function music_previous()
-      {
-          var mnames = document.getElementById('divmusic_name').innerText;
-          var url = "../Index/music_previous";  //控制器中的方法
-          var data = {'mname':mnames};
-          var success = function(response){       //如果php处理成功，调用此方法
-              if(response.error==0)
-              {
-                  $('#music_lyrics').unbind();//移除实时监控事件
-                  document.getElementById('divmusic_name').innerText = response.music_name;
-                  document.getElementById('jp_audio_0').src = response.music_address;
-                  $('.jp-pause').css('display','none');
-                  $('.jp-play').css('display','inline-block');
-              }
-          }
-          $.get(url,data,success,"json");
-      }
-
-      /**
-       * 音乐实时监听
-       **/
-      $('.jp-play').click(function(){
-          var mnames = document.getElementById('divmusic_name').innerText;
-          $('#music_lyrics').on('DOMNodeInserted',function(){
-              var times = $('#music_lyrics').text();
-              var url = "../GetLyrics/music_lyrics"; //控制器中的方法
-              var data = {'mname':mnames,'mtime':times};
-              var success = function(response){
-                  if(response.error==0)
-                  {
-                      document.getElementById('divmusic_name').innerText = response.music_lyrics;
-                  }
-              }
-              $.get(url,data,success,"json");
-          });
-      })
-
-
-      /**
-       *切换歌单列表
-       **/
-      $('#refresh').click(function(){
-          var url = "../Playlistswitch/playlistswitch";//控制器中的方法
-          var success = function(response){
-              if(response.error==0)
-              {
-                  alert(response.playlist[0]['playlist_id']);
-              }
-          }
-          $.get(url,success,"json");
-      })
-      </script>
+      <script type="text/javascript" src="__STATIC__/index/js/index.js"></script>
 </body>
 </html>
