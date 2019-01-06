@@ -10,6 +10,7 @@ use think\Controller;
 use think\facade\Request;
 use app\index\model\Member;
 use think\facade\Session;
+use think\captcha\Captcha;
 
 class Sign extends Controller
 {
@@ -20,6 +21,7 @@ class Sign extends Controller
         {
             $username = Request::param('username');
             $password = Request::param('password');
+            $captcha = Request::param('captcha');
             $find_name = Member::where('user_name',$username)->find();
             if($find_name==NULL)
             {
@@ -29,6 +31,11 @@ class Sign extends Controller
             else if(md5($password)!=$find_name['user_password'])
             {
                 echo '2';
+                exit;
+            }
+            else if(!captcha_check($captcha))
+            {
+                echo '4';
                 exit;
             }
             else{
@@ -83,6 +90,22 @@ class Sign extends Controller
         else{
             return $this->fetch();
         }
+    }
+
+    //验证码
+    public function verify()
+    {
+
+        $config =    [
+            // 验证码字体大小
+            'fontSize'    =>    30,
+            // 验证码位数
+            'length'      =>    4,
+            // 关闭验证码杂点
+            'useNoise'    =>    false,
+        ];
+        $captcha = new Captcha($config);
+        return $captcha->entry();
     }
 
 }
